@@ -1,75 +1,11 @@
 import { Bot, InlineKeyboard, webhookCallback } from "grammy";
 import { chunk } from "lodash";
 import express from "express";
-import { applyTextEffect, Variant } from "./textEffects";
 
-import type { Variant as TextEffectVariant } from "./textEffects";
 
 // Create a bot using the Telegram token
 const bot = new Bot(process.env.TELEGRAM_TOKEN || "");
 
-// Handle inline queries
-const queryRegEx = /effect (monospace|bold|italic) (.*)/;
-bot.inlineQuery(queryRegEx, async (ctx) => {
-    const fullQuery = ctx.inlineQuery.query;
-    const fullQueryMatch = fullQuery.match(queryRegEx);
-    if (!fullQueryMatch) return;
-
-    const effectLabel = fullQueryMatch[1];
-    const originalText = fullQueryMatch[2];
-
-    const effectCode = allEffects.find(
-        (effect) => effect.label.toLowerCase() === effectLabel.toLowerCase()
-    )?.code;
-    const modifiedText = applyTextEffect(originalText, effectCode as Variant);
-
-    await ctx.answerInlineQuery(
-        [
-            {
-                type: "article",
-                id: "text-effect",
-                title: "Text Effects",
-                input_message_content: {
-                    message_text: `Original: ${originalText}
-Modified: ${modifiedText}`,
-                    parse_mode: "HTML",
-                },
-                reply_markup: new InlineKeyboard().switchInline("Share", fullQuery),
-                url: "http://t.me/EludaDevSmarterBot",
-                description: "Create stylish Unicode text, all within Telegram.",
-            },
-        ],
-        { cache_time: 30 * 24 * 3600 } // one month in seconds
-    );
-});
-
-// Return empty result list for other queries.
-bot.on("inline_query", (ctx) => ctx.answerInlineQuery([]));
-
-// Handle text effects from the effect keyboard
-for (const effect of allEffects) {
-    const allEffectCodes = allEffects.map((effect) => effect.code);
-
-    bot.callbackQuery(effectCallbackCodeAccessor(effect.code), async (ctx) => {
-        const { originalText } = parseTextEffectResponse(ctx.msg?.text || "");
-        const modifiedText = applyTextEffect(originalText, effect.code);
-
-        await ctx.editMessageText(
-            textEffectResponseAccessor(originalText, modifiedText),
-            {
-                reply_markup: effectsKeyboardAccessor(
-                    allEffectCodes.filter((code) => code !== effect.code)
-                ),
-            }
-        );
-    });
-}
-
-// Handle the /about command
-const aboutUrlKeyboard = new InlineKeyboard().url(
-    "Host your own bot for free.",
-    "https://cyclic.sh"
-);
 
 // Suggest commands in the menu
 bot.api.setMyCommands([
