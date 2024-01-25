@@ -160,26 +160,17 @@ const aboutUrlKeyboard = new InlineKeyboard().url(
 // Suggest commands in the menu
 bot.api.setMyCommands([
     { command: "info", description: "HEY THERE! Just to let you know, you can use / sanickart, /sanicdeathmatch, /saniccomic, and / future to learn more.Follow the URL to the Sanic The Hedgehog website where you will find the whitepaper and tokenomics as well as a breakdown of the critical aspects of project Sanicverse: https://www.sanicthehedghog.com" },
-    {
-        command: "sanickart",
-        description: "Follow the URL to play the Sanic Kart Open Beta: https://sanickart.sanicthehedgehog.com",
-
-        command: "sanicdeathmatch",
-        description: "Sanic Deathmatch is coming soon!",
-
-        command: "saniccomic",
-        description: "Sanic Comic is coming soon!",
-
-        command: "future",
-        description: "Keep checking back often, watch our socials on Twitter/X and Telegram because the Sanicverse will continue to be built out with new utility and dApps.",
-  },
+    { command: "sanickart", description: "Follow the URL to play the Sanic Kart Open Beta: https://sanickart.sanicthehedgehog.com" },
+    { command: "sanicdeathmatch", description: "Sanic Deathmatch is coming soon!" },
+    { command: "saniccomic", description: "Sanic Comic is coming soon!" },
+    { command: "future", description: "Keep checking back often, watch our socials on Twitter/X and Telegram because the Sanicverse will continue to be built out with new utility and dApps." },
 ]);
 
 // Handle all other messages and the /start command
 const introductionMessage = `Hello! I am Sanic AI - I can help you navigate the Sanicverse.
 
 <b>Commands</b>
-/info - Be greeted by me
+/info - basic information
 /sanickart - Follow the URL to play the Sanic Kart Open Beta: https://sanickart.sanicthehedgehog.com
 /sanicdeathmatch - Sanic Deathmatch is coming soon!
 /saniccomic - Sanic Comic is coming soon!
